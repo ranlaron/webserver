@@ -9,7 +9,7 @@ var mongoStore = require('connect-mongo')({session: expressSession});
 //+ connect to MongoDB
 var dbConn = require('../app/model/db_connection');
 dbConn.getDBConnection(function (currentDB) {
-    var app = express();
+    var app = express(); 
     app.engine('.html', require('ejs').__express);
     app.set('views', '../app/views');
     app.set('view engine', 'html');
