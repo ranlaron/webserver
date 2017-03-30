@@ -28,7 +28,7 @@ exports.signup = function (req, res) {
             req.session.userID = user._id;
             req.session.username = user.username;
             req.session.msg = 'Authenticated as ' + user.username;
-            res.redirect('/');
+            res.redirect('/star');
         }
     });
 };
@@ -39,11 +39,39 @@ exports.login = function (req, res) {
             err = 'User Not Found.';
         } else if (user.hashed_password ===
             hashPW(req.body.password.toString())) {
+            var lastPage = req.session.page;
             req.session.regenerate(function () {
                 req.session.userID = user._id;
                 req.session.username = user.username;
                 req.session.msg = 'Authenticated as ' + user.username;
-                res.redirect('/');
+                req.session.page = lastPage;
+                res.redirect('/star');
+            });
+        } else {
+            err = 'Authentication failed.';
+        }
+        if (err) {
+            req.session.regenerate(function () {
+                req.session.msg = err;
+                res.redirect('/login');
+            });
+        }
+    });
+};
+
+exports.loginEmp = function (req, res) {
+    users.findOne({username: req.body.username}, function (err, user) {
+        if (!user) {
+            err = 'User Not Found.';
+        } else if (user.hashed_password ===
+            hashPW(req.body.password.toString())) {
+            var lastPage = req.session.page;
+            req.session.regenerate(function () {
+                req.session.userID = user._id;
+                req.session.username = user.username;
+                req.session.msg = 'Authenticated as ' + user.username;
+                req.session.page = lastPage;
+                res.redirect('/star');
             });
         } else {
             err = 'Authentication failed.';
@@ -73,7 +101,7 @@ exports.updateUser = function (req, res) {
         user.color = req.body.color;
         users.save(user, {w: 1}, function (err) {
             if (err) {
-                res.sessor.error = err;
+                res.session.error = err;
             } else {
                 req.session.msg = 'User Updated.';
             }

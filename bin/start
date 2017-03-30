@@ -26,9 +26,9 @@ dbConn.getDBConnection(function (currentDB) {
         })
     }));
 
-    require('../app/routes')(app);
+    require('./routes')(app);
 
-    app.listen(8080);
+    app.listen(8090);
 });
 
 

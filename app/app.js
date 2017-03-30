@@ -33,22 +33,22 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-dbConn.getDBConnection(function (currentDB) {
-  app.use(cookieParser('SECRET'));
-  app.use(expressSession({
-    secret: 'SECRET',
-    // saveUninitialized: true,
-    // resave: true,
-    cookie: {maxAge: 60000 * 15},
-    store: new mongoStore({
-      db: currentDB,
-      collection: 'sessions'
-    })
-  }));
+// dbConn.getDBConnection(function (currentDB) {
+//   app.use(cookieParser('SECRET'));
+//   app.use(expressSession({
+//     secret: 'SECRET',
+//     // saveUninitialized: true,
+//     // resave: true,
+//     cookie: {maxAge: 60000 * 15},
+//     store: new mongoStore({
+//       db: currentDB,
+//       collection: 'sessions'
+//     })
+//   }));
+//
+// });
 
-});
-
-require('./routes')(app);
+require('./../bin/routes')(app);
 
 // app.use('/', index);
 // app.use('/users', users);
